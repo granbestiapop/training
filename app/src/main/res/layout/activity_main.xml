@@ -30,11 +30,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/buscar" />
-
+<!--
     <fragment
         android:id="@+id/fragment"
         android:name="com.example.ml.ejercicio.ItemFragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
-
+-->
 </LinearLayout>
