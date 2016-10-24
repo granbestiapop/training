@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Exercise</string>
+    <string name="search_message">Enter product name</string>
+    <string name="buscar">Search</string>
+</resources>
