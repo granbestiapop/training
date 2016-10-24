@@ -25,12 +25,13 @@ public class DummyContent {
      */
     public static final Map<String, DummyItem> ITEM_MAP = new HashMap<String, DummyItem>();
 
+    /*
     static{
         String[] strings= {"Nuevo","Motorola", "Test", "Cel", "Nuevo"};
         for(String s: strings){
             ITEMS_SEARCH.add(new DummyItem(s, s, "Descripcion"));
         }
-    }
+    }*/
 
     public static void addItem(DummyItem item) {
         ITEMS.add(item);
@@ -45,6 +46,10 @@ public class DummyContent {
                 ITEMS.add(d);
             }
         }
+    }
+
+    public static void clear(){
+        ITEMS.clear();
     }
 
     private static DummyItem createDummyItem(int position) {
