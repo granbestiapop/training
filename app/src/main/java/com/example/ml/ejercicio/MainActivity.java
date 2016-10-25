@@ -1,5 +1,6 @@
 package com.example.ml.ejercicio;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -18,6 +19,8 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity{
 
+    private static Context context;
+
     private static Button searchButton;
     private View ifragment;
     private AutoCompleteTextView editText;
@@ -28,6 +31,7 @@ public class MainActivity extends AppCompatActivity{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        context= getApplicationContext();
         loadComponents(savedInstanceState);
         getAutocomplete();
         loadQuerys();
@@ -77,6 +81,10 @@ public class MainActivity extends AppCompatActivity{
         super.onResume();
         Log.d(MainActivity.class.toString(), "Resume");
         getAutocomplete();
+    }
+
+    public static Context getContext(){
+        return MainActivity.context;
     }
 
 }

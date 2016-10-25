@@ -77,7 +77,7 @@ public class AsyncGet extends AsyncTask<String, Void, JSONObject> {
             //refresh view
             RecyclerView r= (RecyclerView)activity;
             r.getAdapter().notifyDataSetChanged();
-            Log.d("ASYNC", "Finish load");
+            Log.d("SEARCH", "Finish search");
             super.onPostExecute(json);
 
         } catch (JSONException e) {

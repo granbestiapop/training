@@ -45,7 +45,6 @@ public class DummyContent {
     public static void search(String term){
         ITEMS.clear();
         for(DummyItem d: ITEMS_SEARCH){
-            Log.e("",d.content);
             if(d.content.contains(term)){
                 ITEMS.add(d);
             }

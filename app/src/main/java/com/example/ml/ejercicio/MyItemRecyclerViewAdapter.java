@@ -1,7 +1,6 @@
 package com.example.ml.ejercicio;
 
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +10,8 @@ import android.widget.TextView;
 import com.example.ml.ejercicio.ItemFragment.OnListFragmentInteractionListener;
 import com.example.ml.ejercicio.dummy.DummyContent.DummyItem;
 import com.example.ml.ejercicio.utils.ImageDownloader;
+import android.util.Log;
+
 
 import java.util.List;
 
@@ -27,6 +28,7 @@ public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecycl
     public MyItemRecyclerViewAdapter(List<DummyItem> items, OnListFragmentInteractionListener listener) {
         mValues = items;
         mListener = listener;
+        Log.d(this.getClass().toString(), "FIRST?");
     }
 
     @Override
@@ -40,7 +42,6 @@ public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecycl
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
         holder.mContentView.setText(mValues.get(position).content);
-        Log.d("MESSAGE", mValues.get(position).thumbnail);
 
         //holder.thumbnail.setImageResource(R.mipmap.ic_launcher);
         new ImageDownloader(holder.thumbnail).execute(mValues.get(position).thumbnail);
@@ -71,6 +72,7 @@ public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecycl
             mView = view;
             mContentView = (TextView) view.findViewById(R.id.content);
             thumbnail= (ImageView) view.findViewById(R.id.thumbnail);
+            Log.d(MyItemRecyclerViewAdapter.class.toString(), "Segundo?");
         }
 
         @Override

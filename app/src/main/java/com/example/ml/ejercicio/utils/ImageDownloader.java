@@ -28,14 +28,29 @@ public class ImageDownloader extends AsyncTask<String, Void, Bitmap> {
 
     @Override
     protected Bitmap doInBackground(String... urls) {
+        // check if is in cache
+        String urlname= urls[0];
+        String fileName = urlname.substring(urlname.lastIndexOf('/')+1, urlname.length());
+
+        Bitmap b= ImageContainer.readFile(fileName);
+        if(b!=null){
+            Log.d("IMAGE","Get from cache");
+            return b;
+        }else{
+            Log.d("IMAGE","Download"+ urlname);
+        }
+
         HttpURLConnection http= null;
         try {
             URL url= new URL(urls[0]);
-            Log.d("IMAGE", url.toString());
             http= (HttpURLConnection)url.openConnection();
             http.connect();
             InputStream content= http.getInputStream();
-            return BitmapFactory.decodeStream(content);
+            Bitmap bm= BitmapFactory.decodeStream(content);
+
+            //Save on cache
+            ImageContainer.writeFile(fileName,bm);
+            return bm;
 
         } catch (MalformedURLException e) {
             e.printStackTrace();
@@ -55,7 +70,6 @@ public class ImageDownloader extends AsyncTask<String, Void, Bitmap> {
         }else{
             iv.setImageResource(R.mipmap.ic_launcher);
         }
-        Log.d("IMAGEDOWNLOADER", "Finish download image");
         super.onPostExecute(bitmap);
     }
 }

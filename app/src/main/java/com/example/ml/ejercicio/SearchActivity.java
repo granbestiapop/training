@@ -46,7 +46,7 @@ public class SearchActivity extends AppCompatActivity implements ItemFragment.On
 
     @Override
     public void onListFragmentInteraction(DummyContent.DummyItem item) {
-        Log.d("CLiCK", "Click on item"+ item.id);
+        Log.d("CLICK", "Click on item"+ item.id);
         vipActivity(item);
     }
 }
