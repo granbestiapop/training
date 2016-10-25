@@ -1,10 +1,14 @@
 package com.example.ml.ejercicio.dummy;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import android.util.Log;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 
 /**
@@ -53,7 +57,7 @@ public class DummyContent {
     }
 
     private static DummyItem createDummyItem(int position) {
-        return new DummyItem(String.valueOf(position), "Item " + position, makeDetails(position));
+        return new DummyItem(String.valueOf(position), "Item " + position, makeDetails(position), "");
     }
 
     private static String makeDetails(int position) {
@@ -68,20 +72,47 @@ public class DummyContent {
     /**
      * A dummy item representing a piece of content.
      */
-    public static class DummyItem {
+    public static class DummyItem implements Serializable {
         public final String id;
         public final String content;
         public final String details;
+        public final String thumbnail;
+        public Double price;
+        public List<String> images= new ArrayList<>();
 
-        public DummyItem(String id, String content, String details) {
+        public DummyItem(String id, String content, String details, String thumbnail) {
             this.id = id;
             this.content = content;
             this.details = details;
+            this.thumbnail= thumbnail;
         }
 
         @Override
         public String toString() {
             return content;
+        }
+
+        public static DummyItem fromJSON(JSONObject o){
+            DummyItem i= null;
+            try{
+                String title= o.getString("title");
+                Double price= o.getDouble("price");
+                String id= o.getString("id");
+                String thumb= o.getString("thumbnail");
+                JSONArray images= o.getJSONArray("pictures");
+
+                i= new DummyItem(id,title, "Descripcion HARDCODED", thumb);
+                i.price= price;
+                //dump images
+                int size= images.length();
+                for(int it=0; it<size;it++){
+                    JSONObject image= images.getJSONObject(it);
+                    i.images.add(image.getString("url"));
+                }
+            }catch (Exception e){
+
+            }
+            return i;
         }
     }
 }

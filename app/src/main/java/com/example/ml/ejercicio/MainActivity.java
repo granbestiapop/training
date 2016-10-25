@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity implements ItemFragment.OnListFragmentInteractionListener{
+public class MainActivity extends AppCompatActivity{
 
     private static Button searchButton;
     private View ifragment;
@@ -34,8 +34,8 @@ public class MainActivity extends AppCompatActivity implements ItemFragment.OnLi
         setEvents();
     }
 
-    @Override
-    public void onListFragmentInteraction() {
+
+    public void searchActivity() {
         String toSearch = editText.getText().toString();
         Intent intent = new Intent(this, SearchActivity.class);
         intent.putExtra(Constants.TERM, toSearch);
@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity implements ItemFragment.OnLi
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onListFragmentInteraction();
+                searchActivity();
             }
         });
     }

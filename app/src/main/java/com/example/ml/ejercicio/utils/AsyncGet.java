@@ -71,7 +71,8 @@ public class AsyncGet extends AsyncTask<String, Void, JSONObject> {
                 String title= o.getString("title");
                 Double price= o.getDouble("price");
                 String id= o.getString("id");
-                DummyContent.addItem(new DummyContent.DummyItem(id,title,price.toString()));
+                String thumb= o.getString("thumbnail");
+                DummyContent.addItem(new DummyContent.DummyItem(id,title,price.toString(),thumb));
             }
             //refresh view
             RecyclerView r= (RecyclerView)activity;
