@@ -7,6 +7,7 @@ import com.example.ml.ejercicio.dummy.DummyContent;
 
 import android.util.Log;
 import android.view.View;
+import android.content.SharedPreferences;
 import com.example.ml.ejercicio.utils.AsyncGet;
 import com.example.ml.ejercicio.utils.Constants;
 
@@ -20,17 +21,17 @@ public class SearchActivity extends AppCompatActivity implements ItemFragment.On
 
         String term= getIntent().getExtras().getString(Constants.TERM);
         View v= findViewById(R.id.fragment);
-        Log.d("SEARCH", term);
-        // set last query
-        //SharedPreferences pref= getSharedPreferences(Constants.APP_NAME,0);
-        //SharedPreferences.Editor edit= pref.edit();
-        //edit.putString(Constants.LAST_QUERY, toSearch);
+
+        SharedPreferences pref= getSharedPreferences(Constants.APP_NAME,0);
+        SharedPreferences.Editor edit= pref.edit();
+        edit.putString(Constants.LAST_QUERY, term);
+        MainActivity.queries.put(term, term);
         new AsyncGet(v).execute(term);
     }
 
 
     @Override
-    public void onListFragmentInteraction(DummyContent.DummyItem item) {
+    public void onListFragmentInteraction() {
 
     }
 }
