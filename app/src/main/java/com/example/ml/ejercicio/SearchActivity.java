@@ -1,52 +1,79 @@
 package com.example.ml.ejercicio;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-import android.view.MotionEvent;
-import android.view.View;
 import android.content.SharedPreferences;
+import android.os.Bundle;
+import android.os.Handler;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
 
-import com.example.ml.ejercicio.dummy.DummyContent;
+import com.example.ml.ejercicio.dto.models.Item;
+import com.example.ml.ejercicio.dto.models.ItemsInfo;
+import com.example.ml.ejercicio.interfaces.OnListFragmentInteractionListener;
+import com.example.ml.ejercicio.services.DownloadItem;
+import com.example.ml.ejercicio.services.HandlerReceiver;
 import com.example.ml.ejercicio.utils.AsyncGet;
 import com.example.ml.ejercicio.utils.Constants;
+import android.util.Log;
 
+import java.util.List;
 
-public class SearchActivity extends AppCompatActivity implements ItemFragment.OnListFragmentInteractionListener {
+public class SearchActivity extends AppCompatActivity implements OnListFragmentInteractionListener, HandlerReceiver.Receiver {
 
-    private View itemFragment;
-
+    private RecyclerView itemFragment;
+    private OnListFragmentInteractionListener frag;
+    private HandlerReceiver handler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ItemsInfo items= (ItemsInfo) getIntent().getExtras().get(Constants.LIST_ITEMS);
+
         setContentView(R.layout.activity_search_main);
-
         String term= getIntent().getExtras().getString(Constants.TERM);
-
-        //get fragment
-        itemFragment= findViewById(R.id.fragment);
-
+        itemFragment=  (RecyclerView) findViewById(R.id.fragment);
+        MyItemRecyclerViewAdapter adapter= new MyItemRecyclerViewAdapter(items.getItems(),this);
+        itemFragment.setAdapter(adapter);
 
         SharedPreferences pref= getSharedPreferences(Constants.APP_NAME,0);
         SharedPreferences.Editor edit= pref.edit();
         edit.putString(Constants.LAST_QUERY, term);
         MainActivity.queries.put(term, term);
-        new AsyncGet(itemFragment).execute(term);
+        frag= (OnListFragmentInteractionListener) getFragmentManager().findFragmentById(R.id.fragment);
+
+        //new AsyncGet(this).execute(term);
     }
 
-    public void vipActivity(DummyContent.DummyItem item) {
-        Intent intent = new Intent(this, ProductActivity.class);
-        intent.putExtra(Constants.ITEM_ID, item);
-        startActivity(intent);
+    public void vipActivity(String itemId) {
+        Log.d("SEARCH_ACTIVITY","VIP");
+        Intent intent= new Intent(this, DownloadItem.class);
+        intent.putExtra(Constants.ITEM_ID, itemId);
+        handler= new HandlerReceiver(new Handler());
+        handler.setReceiver(this);
+        intent.putExtra(Constants.HANDLER, handler);
+        startService(intent);
     }
 
     @Override
-    public void onListFragmentInteraction(DummyContent.DummyItem item) {
-        Log.d("CLICK", "Click on item"+ item.id);
-        vipActivity(item);
+    public void onListFragmentInteraction(Item item) {
+        vipActivity(item.id);
+    }
+
+    @Override
+    public void setItems(ItemsInfo iInfo) {
+        Log.d("SEARCH_ACTIVITY", "Set items");
+        /*
+        Intent intent = new Intent(this, ProductActivity.class);
+        intent.putExtra(Constants.ITEM_ID, iInfo);
+        startActivity(intent);*/
+    }
+
+    @Override
+    public void onReceiveResult(int resultCode, Bundle resultData) {
+        Item item= resultData.getParcelable(Constants.ITEM_SEARCH);
+        Log.d("SEARCH_ACTIVITY", item.id);
+        Intent intent = new Intent(this, ProductActivity.class);
+        intent.putExtra(Constants.ITEM_ID, item);
+        startActivity(intent);
     }
 }

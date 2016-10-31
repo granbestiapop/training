@@ -1,7 +1,6 @@
 package com.example.ml.ejercicio.utils;
 
 import com.example.ml.ejercicio.dummy.DummyContent;
-import com.example.ml.ejercicio.dummy.Item;
 
 import org.json.JSONException;
 import org.json.JSONObject;

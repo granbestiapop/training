@@ -1,11 +1,11 @@
 package com.example.ml.ejercicio.utils;
 
 import android.os.AsyncTask;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.View;
 
-import com.example.ml.ejercicio.dummy.DummyContent;
+import com.example.ml.ejercicio.dto.models.Item;
+import com.example.ml.ejercicio.dto.models.ItemsInfo;
+import com.example.ml.ejercicio.interfaces.OnListFragmentInteractionListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -18,6 +18,8 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by lclavijo on 10/24/16.
@@ -25,10 +27,10 @@ import java.net.URL;
 
 public class AsyncGet extends AsyncTask<String, Void, JSONObject> {
 
-    private View activity;
+    private OnListFragmentInteractionListener activity;
     private String term;
 
-    public AsyncGet(View v){
+    public AsyncGet(OnListFragmentInteractionListener v){
         activity= v;
     }
 
@@ -64,19 +66,21 @@ public class AsyncGet extends AsyncTask<String, Void, JSONObject> {
         try {
             results = json.getJSONArray("results");
             //clear list
-            DummyContent.clear();
 
+            List<Item> list= new ArrayList<>();
             for(int i=0; i<results.length(); i++){
                 JSONObject o= results.getJSONObject(i);
                 String title= o.getString("title");
                 Double price= o.getDouble("price");
                 String id= o.getString("id");
                 String thumb= o.getString("thumbnail");
-                DummyContent.addItem(new DummyContent.DummyItem(id,title,price.toString(),thumb));
+                list.add(new Item(id,title,price.toString(),thumb));
             }
             //refresh view
-            RecyclerView r= (RecyclerView)activity;
-            r.getAdapter().notifyDataSetChanged();
+            //RecyclerView r= (RecyclerView)activity;
+            ItemsInfo iInfo= new ItemsInfo(list);
+            activity.setItems(iInfo);
+
             Log.d("SEARCH", "Finish search");
             super.onPostExecute(json);
 

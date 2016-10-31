@@ -1,13 +1,10 @@
 package com.example.ml.ejercicio.utils;
 
 import android.os.AsyncTask;
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
 import com.example.ml.ejercicio.dummy.DummyContent;
-import com.example.ml.ejercicio.dummy.Item;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -70,8 +67,8 @@ public class AsyncGetItem extends AsyncTask<String, Void, DummyContent.DummyItem
     protected void onPostExecute(DummyContent.DummyItem item) {
         JSONArray results= null;
         try {
-            TextView tv= (TextView) activity;
-            tv.setText(item.content);
+            //TextView tv= (TextView) activity;
+            //tv.setText(item.content);
 
             new ImageDownloader(image).execute(item.images.get(0));
             super.onPostExecute(item);

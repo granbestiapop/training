@@ -7,12 +7,13 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.ml.ejercicio.ItemFragment.OnListFragmentInteractionListener;
+import com.example.ml.ejercicio.dto.models.Item;
+import com.example.ml.ejercicio.interfaces.OnListFragmentInteractionListener;
 import com.example.ml.ejercicio.dummy.DummyContent.DummyItem;
 import com.example.ml.ejercicio.utils.ImageDownloader;
-import android.util.Log;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -22,13 +23,21 @@ import java.util.List;
  */
 public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecyclerViewAdapter.ViewHolder> {
 
-    private final List<DummyItem> mValues;
-    private final OnListFragmentInteractionListener mListener;
+    private List<Item> mValues;
+    private OnListFragmentInteractionListener mListener;
 
-    public MyItemRecyclerViewAdapter(List<DummyItem> items, OnListFragmentInteractionListener listener) {
+    public MyItemRecyclerViewAdapter(List<Item> items, OnListFragmentInteractionListener listener) {
         mValues = items;
         mListener = listener;
-        Log.d(this.getClass().toString(), "FIRST?");
+    }
+
+    public MyItemRecyclerViewAdapter(OnListFragmentInteractionListener listener) {
+        mListener = listener;
+        mValues= new ArrayList<>();
+    }
+
+    public void setItems(List<Item> items){
+        mValues= items;
     }
 
     @Override
@@ -41,7 +50,7 @@ public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecycl
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
-        holder.mContentView.setText(mValues.get(position).content);
+        holder.mContentView.setText(mValues.get(position).details);
 
         //holder.thumbnail.setImageResource(R.mipmap.ic_launcher);
         new ImageDownloader(holder.thumbnail).execute(mValues.get(position).thumbnail);
@@ -65,14 +74,13 @@ public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecycl
         public final View mView;
         public final TextView mContentView;
         public final ImageView thumbnail;
-        public DummyItem mItem;
+        public Item mItem;
 
         public ViewHolder(View view) {
             super(view);
             mView = view;
             mContentView = (TextView) view.findViewById(R.id.content);
             thumbnail= (ImageView) view.findViewById(R.id.thumbnail);
-            Log.d(MyItemRecyclerViewAdapter.class.toString(), "Segundo?");
         }
 
         @Override

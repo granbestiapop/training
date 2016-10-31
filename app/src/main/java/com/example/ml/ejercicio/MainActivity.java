@@ -3,6 +3,7 @@ package com.example.ml.ejercicio;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -10,6 +11,10 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 
+import com.example.ml.ejercicio.dto.models.Item;
+import com.example.ml.ejercicio.dto.models.ItemsInfo;
+import com.example.ml.ejercicio.interfaces.OnListFragmentInteractionListener;
+import com.example.ml.ejercicio.utils.AsyncGet;
 import com.example.ml.ejercicio.utils.Constants;
 
 import java.util.HashMap;
@@ -17,7 +22,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity{
+public class MainActivity extends AppCompatActivity implements OnListFragmentInteractionListener{
 
     private static Context context;
 
@@ -31,19 +36,21 @@ public class MainActivity extends AppCompatActivity{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        PhotoManager manager= PhotoManager.instance;
+        manager.downloadImage(null, "");
+
         context= getApplicationContext();
         loadComponents(savedInstanceState);
         getAutocomplete();
         loadQuerys();
         setEvents();
+        startServices();
     }
 
 
     public void searchActivity() {
         String toSearch = editText.getText().toString();
-        Intent intent = new Intent(this, SearchActivity.class);
-        intent.putExtra(Constants.TERM, toSearch);
-        startActivity(intent);
+        new AsyncGet(this).execute(toSearch);
     }
 
     private void getAutocomplete(){
@@ -87,4 +94,23 @@ public class MainActivity extends AppCompatActivity{
         return MainActivity.context;
     }
 
+    private void startServices(){
+        //Intent srv= new Intent(this, ImagesService.class);
+        //startService(srv);
+        //Log.d(MainActivity.class.toString(), "Servicio inicializado");
+    }
+
+    @Override
+    public void onListFragmentInteraction(Item item) {
+
+    }
+
+    @Override
+    public void setItems(ItemsInfo iInfo) {
+        Log.d("MAIN_ACTIVITY", "setItems");
+        ItemsInfo items= new ItemsInfo(iInfo.getItems());
+        Intent intent = new Intent(this, SearchActivity.class);
+        intent.putExtra(Constants.LIST_ITEMS,items);
+        startActivity(intent);
+    }
 }

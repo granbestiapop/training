@@ -9,12 +9,11 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.ml.ejercicio.dto.models.Item;
+import com.example.ml.ejercicio.dto.models.ItemsInfo;
 import com.example.ml.ejercicio.dummy.DummyContent;
-import com.example.ml.ejercicio.dummy.Item;
 import com.example.ml.ejercicio.utils.AsyncGetItem;
 import com.example.ml.ejercicio.utils.Constants;
-import com.example.ml.ejercicio.utils.ImageDownloader;
-import com.example.ml.ejercicio.utils.RESTClient;
 
 public class ProductActivity extends AppCompatActivity {
 
@@ -29,6 +28,10 @@ public class ProductActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        //get info
+        Item item= (Item) getIntent().getExtras().get(Constants.ITEM_ID);
+
+
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -40,8 +43,9 @@ public class ProductActivity extends AppCompatActivity {
 
         textView= (TextView) findViewById(R.id.item_description);
         imageView= (ImageView) findViewById(R.id.imageToolbar);
-        DummyContent.DummyItem item= (DummyContent.DummyItem) getIntent().getExtras().get(Constants.ITEM_ID);
-        new AsyncGetItem(textView, imageView).execute(item.id);
+        textView.setText(item.getDetails());
+        //DummyContent.DummyItem item= (DummyContent.DummyItem) getIntent().getExtras().get(Constants.ITEM_ID);
+        //new AsyncGetItem(textView, imageView).execute(item.id);
 
     }
 }
