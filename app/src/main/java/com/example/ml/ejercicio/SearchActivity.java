@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 
 import com.example.ml.ejercicio.dto.models.Item;
+import com.example.ml.ejercicio.dto.models.ItemWrap;
 import com.example.ml.ejercicio.dto.models.ItemsInfo;
 import com.example.ml.ejercicio.interfaces.OnListFragmentInteractionListener;
 import com.example.ml.ejercicio.services.DownloadItem;
@@ -21,7 +22,6 @@ import java.util.List;
 public class SearchActivity extends AppCompatActivity implements OnListFragmentInteractionListener, HandlerReceiver.Receiver {
 
     private RecyclerView itemFragment;
-    private OnListFragmentInteractionListener frag;
     private HandlerReceiver handler;
 
     @Override
@@ -39,9 +39,6 @@ public class SearchActivity extends AppCompatActivity implements OnListFragmentI
         SharedPreferences.Editor edit= pref.edit();
         edit.putString(Constants.LAST_QUERY, term);
         MainActivity.queries.put(term, term);
-        frag= (OnListFragmentInteractionListener) getFragmentManager().findFragmentById(R.id.fragment);
-
-        //new AsyncGet(this).execute(term);
     }
 
     public void vipActivity(String itemId) {
@@ -55,23 +52,18 @@ public class SearchActivity extends AppCompatActivity implements OnListFragmentI
     }
 
     @Override
-    public void onListFragmentInteraction(Item item) {
+    public void onListFragmentInteraction(ItemWrap item) {
         vipActivity(item.id);
     }
 
     @Override
     public void setItems(ItemsInfo iInfo) {
-        Log.d("SEARCH_ACTIVITY", "Set items");
-        /*
-        Intent intent = new Intent(this, ProductActivity.class);
-        intent.putExtra(Constants.ITEM_ID, iInfo);
-        startActivity(intent);*/
+
     }
 
     @Override
     public void onReceiveResult(int resultCode, Bundle resultData) {
-        Item item= resultData.getParcelable(Constants.ITEM_SEARCH);
-        Log.d("SEARCH_ACTIVITY", item.id);
+        ItemsInfo item= resultData.getParcelable(Constants.ITEM_SEARCH);
         Intent intent = new Intent(this, ProductActivity.class);
         intent.putExtra(Constants.ITEM_ID, item);
         startActivity(intent);

@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.ml.ejercicio.dto.models.Item;
+import com.example.ml.ejercicio.dto.models.ItemWrap;
 import com.example.ml.ejercicio.interfaces.OnListFragmentInteractionListener;
 import com.example.ml.ejercicio.dummy.DummyContent.DummyItem;
 import com.example.ml.ejercicio.utils.ImageDownloader;
@@ -23,10 +24,10 @@ import java.util.List;
  */
 public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecyclerViewAdapter.ViewHolder> {
 
-    private List<Item> mValues;
+    private List<ItemWrap> mValues;
     private OnListFragmentInteractionListener mListener;
 
-    public MyItemRecyclerViewAdapter(List<Item> items, OnListFragmentInteractionListener listener) {
+    public MyItemRecyclerViewAdapter(List<ItemWrap> items, OnListFragmentInteractionListener listener) {
         mValues = items;
         mListener = listener;
     }
@@ -36,7 +37,7 @@ public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecycl
         mValues= new ArrayList<>();
     }
 
-    public void setItems(List<Item> items){
+    public void setItems(List<ItemWrap> items){
         mValues= items;
     }
 
@@ -74,7 +75,7 @@ public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecycl
         public final View mView;
         public final TextView mContentView;
         public final ImageView thumbnail;
-        public Item mItem;
+        public ItemWrap mItem;
 
         public ViewHolder(View view) {
             super(view);

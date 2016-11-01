@@ -6,16 +6,18 @@ import java.util.List;
 
 public class ItemsInfo implements Parcelable {
 
-    private List<Item> items;
+    private List<ItemWrap> items;
     private Item search;
+    public boolean isTrackeable;
 
-    public ItemsInfo(List<Item> items){
+    public ItemsInfo(List<ItemWrap> items){
         this.items= items;
     }
 
     protected ItemsInfo(Parcel in) {
-        items= in.createTypedArrayList(Item.CREATOR);
+        items= in.createTypedArrayList(ItemWrap.CREATOR);
         search= in.readParcelable(Item.class.getClassLoader());
+        isTrackeable= in.readByte() != 0;
     }
 
     public static final Creator<ItemsInfo> CREATOR = new Creator<ItemsInfo>() {
@@ -39,13 +41,14 @@ public class ItemsInfo implements Parcelable {
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeTypedList(items);
         parcel.writeParcelable(search, i);
+        parcel.writeByte((byte) (isTrackeable ? 1 : 0));
     }
 
-    public List<Item> getItems() {
+    public List<ItemWrap> getItems() {
         return items;
     }
 
-    public void setItems(List<Item> items) {
+    public void setItems(List<ItemWrap> items) {
         this.items = items;
     }
 
@@ -55,5 +58,13 @@ public class ItemsInfo implements Parcelable {
 
     public void setSearch(Item search) {
         this.search = search;
+    }
+
+    public boolean isTrackeable() {
+        return isTrackeable;
+    }
+
+    public void setTrackeable(boolean trackeable) {
+        isTrackeable = trackeable;
     }
 }

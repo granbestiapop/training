@@ -1,6 +1,7 @@
 package com.example.ml.ejercicio.interfaces;
 
 import com.example.ml.ejercicio.dto.models.Item;
+import com.example.ml.ejercicio.dto.models.ItemWrap;
 import com.example.ml.ejercicio.dto.models.ItemsInfo;
 
 import java.util.List;
@@ -10,6 +11,6 @@ import java.util.List;
  */
 
 public interface OnListFragmentInteractionListener {
-    void onListFragmentInteraction(Item item);
+    void onListFragmentInteraction(ItemWrap itemWrap);
     void setItems(ItemsInfo list);
 }

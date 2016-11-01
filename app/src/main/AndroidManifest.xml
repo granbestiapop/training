@@ -28,6 +28,13 @@
             android:exported="false" />
         <service
             android:name=".services.DownloadItem"
+            android:exported="false" />
+        <service
+            android:name=".services.TrackService"
+            android:enabled="true"
+            android:exported="true" />
+        <service
+            android:name=".services.TrackIntentService"
             android:exported="false"></service>
     </application>
 

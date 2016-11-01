@@ -2,53 +2,42 @@ package com.example.ml.ejercicio.dto.models;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.util.Log;
-
-import com.example.ml.ejercicio.dummy.DummyContent;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.List;
 
-public class Item implements Parcelable {
+public class ItemWrap implements Parcelable {
     public final String id;
     public final String title;
     public final String details;
     public final String thumbnail;
-    public String last_update;
     public Double price;
 
-    public List<String> images;
 
-
-    public Item(String id, String title, String details, String thumbnail) {
+    public ItemWrap(String id, String title, String details, String thumbnail) {
         this.id = id;
         this.title = title;
         this.details = details;
         this.thumbnail = thumbnail;
-        images = new ArrayList<>();
     }
 
-    protected Item(Parcel in) {
+    protected ItemWrap(Parcel in) {
         id = in.readString();
         title = in.readString();
         details = in.readString();
         thumbnail = in.readString();
-        images = in.createStringArrayList();
-        last_update = in.readString();
     }
 
-    public static final Creator<Item> CREATOR = new Creator<Item>() {
+    public static final Creator<ItemWrap> CREATOR = new Creator<ItemWrap>() {
         @Override
-        public Item createFromParcel(Parcel in) {
-            return new Item(in);
+        public ItemWrap createFromParcel(Parcel in) {
+            return new ItemWrap(in);
         }
 
         @Override
-        public Item[] newArray(int size) {
-            return new Item[size];
+        public ItemWrap[] newArray(int size) {
+            return new ItemWrap[size];
         }
     };
 
@@ -76,13 +65,6 @@ public class Item implements Parcelable {
         this.price = price;
     }
 
-    public String getLast_update() {
-        return last_update;
-    }
-
-    public void setLast_update(String last_update) {
-        this.last_update = last_update;
-    }
 
     @Override
     public String toString() {
@@ -101,50 +83,32 @@ public class Item implements Parcelable {
         parcel.writeString(title);
         parcel.writeString(details);
         parcel.writeString(thumbnail);
-        parcel.writeStringList(images);
-        parcel.writeString(last_update);
     }
 
-    public static Item fromJSON(JSONObject o) {
-        Item i = null;
+    public static ItemWrap fromJSON(JSONObject o) {
+        ItemWrap i = null;
         try {
             String title = o.getString("title");
             Double price = o.getDouble("price");
             String id = o.getString("id");
             String thumb = o.getString("thumbnail");
-
-            i = new Item(id, title, "Descripcion", thumb);
+            i = new ItemWrap(id, title, "Descripcion", thumb);
             i.price = price;
-
-            String last_update = o.getString("last_updated");
-            i.last_update = last_update;
-
-
-            //dump images
-            JSONArray images = o.getJSONArray("pictures");
-
-            int size = images.length();
-            for (int it = 0; it < size; it++) {
-                JSONObject image = images.getJSONObject(it);
-                i.images.add(image.getString("url"));
-            }
-
-
         } catch (Exception e) {
             e.printStackTrace();
         }
         return i;
     }
 
-    public static List<Item> listFromJSON(JSONArray o) {
+    public static List<ItemWrap> listFromJSON(JSONArray o) {
         Item i = null;
-        List<Item> list = new ArrayList<>();
+        List<ItemWrap> list = new ArrayList<>();
 
         try {
             int size = o.length();
             for (int it = 0; it < size; it++) {
                 JSONObject json = o.getJSONObject(it);
-                Item item = fromJSON(json);
+                ItemWrap item = fromJSON(json);
                 list.add(item);
             }
 

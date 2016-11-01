@@ -8,6 +8,7 @@ import android.graphics.BitmapFactory;
 import android.util.Log;
 
 import com.example.ml.ejercicio.dto.models.Item;
+import com.example.ml.ejercicio.dto.models.ItemWrap;
 import com.example.ml.ejercicio.dto.models.ItemsInfo;
 import com.example.ml.ejercicio.interfaces.OnListFragmentInteractionListener;
 import com.example.ml.ejercicio.utils.Constants;
@@ -91,7 +92,7 @@ public class ImagesService extends IntentService {
             final String action= intent.getAction();
             Log.d("SERVICE", action);
             if(action.equals("GET_ITEM")){
-                List<Item> list= getItems(param1);
+                List<ItemWrap> list= getItems(param1);
                 ItemsInfo iInfo= new ItemsInfo(list);
                 mlistener.setItems(iInfo);
             }
@@ -126,7 +127,7 @@ public class ImagesService extends IntentService {
         return null;
     }
 
-    public List<Item> getItems(String term){
+    public List<ItemWrap> getItems(String term){
         try {
             String search= "https://api.mercadolibre.com/sites/MLU/search?q="+term;
             URL url= new URL(search);
@@ -140,14 +141,14 @@ public class ImagesService extends IntentService {
 
             JSONObject json= new JSONObject(s);
             JSONArray results = json.getJSONArray("results");
-            List<Item> list= new ArrayList<>();
+            List<ItemWrap> list= new ArrayList<>();
             for(int i=0; i<results.length(); i++){
                 JSONObject o= results.getJSONObject(i);
                 String title= o.getString("title");
                 Double price= o.getDouble("price");
                 String id= o.getString("id");
                 String thumb= o.getString("thumbnail");
-                list.add(new Item(id,title,price.toString(),thumb));
+                list.add(new ItemWrap(id,title,price.toString(),thumb));
             }
             return list;
 

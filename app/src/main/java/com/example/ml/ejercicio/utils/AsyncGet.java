@@ -4,6 +4,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import com.example.ml.ejercicio.dto.models.Item;
+import com.example.ml.ejercicio.dto.models.ItemWrap;
 import com.example.ml.ejercicio.dto.models.ItemsInfo;
 import com.example.ml.ejercicio.interfaces.OnListFragmentInteractionListener;
 
@@ -65,23 +66,19 @@ public class AsyncGet extends AsyncTask<String, Void, JSONObject> {
         JSONArray results= null;
         try {
             results = json.getJSONArray("results");
-            //clear list
 
-            List<Item> list= new ArrayList<>();
+            List<ItemWrap> list= new ArrayList<>();
             for(int i=0; i<results.length(); i++){
                 JSONObject o= results.getJSONObject(i);
-                String title= o.getString("title");
-                Double price= o.getDouble("price");
-                String id= o.getString("id");
-                String thumb= o.getString("thumbnail");
-                list.add(new Item(id,title,price.toString(),thumb));
+                ItemWrap item= ItemWrap.fromJSON(o);
+                Log.d("ITEM", item.toString());
+                list.add(item);
             }
-            //refresh view
-            //RecyclerView r= (RecyclerView)activity;
+
             ItemsInfo iInfo= new ItemsInfo(list);
             activity.setItems(iInfo);
 
-            Log.d("SEARCH", "Finish search");
+            Log.d("SEARCH", "Finish search"+ list.size());
             super.onPostExecute(json);
 
         } catch (JSONException e) {

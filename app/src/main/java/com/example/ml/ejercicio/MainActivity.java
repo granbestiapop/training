@@ -12,8 +12,10 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 
 import com.example.ml.ejercicio.dto.models.Item;
+import com.example.ml.ejercicio.dto.models.ItemWrap;
 import com.example.ml.ejercicio.dto.models.ItemsInfo;
 import com.example.ml.ejercicio.interfaces.OnListFragmentInteractionListener;
+import com.example.ml.ejercicio.services.TrackService;
 import com.example.ml.ejercicio.utils.AsyncGet;
 import com.example.ml.ejercicio.utils.Constants;
 
@@ -95,22 +97,25 @@ public class MainActivity extends AppCompatActivity implements OnListFragmentInt
     }
 
     private void startServices(){
-        //Intent srv= new Intent(this, ImagesService.class);
-        //startService(srv);
-        //Log.d(MainActivity.class.toString(), "Servicio inicializado");
+        Intent trackService= new Intent(this, TrackService.class);
+        startService(trackService);
     }
 
     @Override
-    public void onListFragmentInteraction(Item item) {
+    public void onListFragmentInteraction(ItemWrap item) {
 
     }
 
     @Override
     public void setItems(ItemsInfo iInfo) {
-        Log.d("MAIN_ACTIVITY", "setItems");
-        ItemsInfo items= new ItemsInfo(iInfo.getItems());
+        Log.d("MAIN_ACTIVITY", "RESULTS");
+        Log.d("MAIN_ACTIVITY", ""+iInfo.getItems().size());
+
+        for(ItemWrap it: iInfo.getItems()){
+            Log.d("MAIN_ACTIVITY", it.toString());
+        }
         Intent intent = new Intent(this, SearchActivity.class);
-        intent.putExtra(Constants.LIST_ITEMS,items);
+        intent.putExtra(Constants.LIST_ITEMS, iInfo);
         startActivity(intent);
     }
 }

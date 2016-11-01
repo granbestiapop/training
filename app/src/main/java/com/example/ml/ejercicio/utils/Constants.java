@@ -14,5 +14,8 @@ public class Constants {
     public final static String LIST_ITEMS= "LIST_ITEMS";
     public final static String ITEM_SEARCH= "ITEM_SEARCH";
     public final static String HANDLER= "HANDLER";
+    public final static String ADD_TRACK= "ADD_TRACK";
+    public final static String DELETE_TRACK= "DELETE_TRACK";
+
 
 }

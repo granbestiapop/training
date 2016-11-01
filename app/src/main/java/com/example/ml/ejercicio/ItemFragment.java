@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.ml.ejercicio.dto.models.Item;
+import com.example.ml.ejercicio.dto.models.ItemWrap;
 import com.example.ml.ejercicio.dto.models.ItemsInfo;
 import com.example.ml.ejercicio.interfaces.OnListFragmentInteractionListener;
 
@@ -65,7 +66,7 @@ public class ItemFragment extends Fragment implements OnListFragmentInteractionL
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            recyclerView.setAdapter(new MyItemRecyclerViewAdapter(new ArrayList<Item>(), mListener));
+            recyclerView.setAdapter(new MyItemRecyclerViewAdapter(new ArrayList<ItemWrap>(), mListener));
         }
         return view;
     }
@@ -89,7 +90,7 @@ public class ItemFragment extends Fragment implements OnListFragmentInteractionL
     }
 
     @Override
-    public void onListFragmentInteraction(Item item) {
+    public void onListFragmentInteraction(ItemWrap item) {
 
     }
 
