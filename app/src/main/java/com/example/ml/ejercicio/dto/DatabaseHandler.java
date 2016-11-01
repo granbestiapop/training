@@ -8,13 +8,13 @@ import android.database.sqlite.SQLiteOpenHelper;
 import com.example.ml.ejercicio.dto.models.Track;
 
 public class DatabaseHandler extends SQLiteOpenHelper {
-    public static final int DATABASE_VERSION = 3;
+    public static final int DATABASE_VERSION = 4;
     public static final String DATABASE_NAME = "Track.db";
 
     private static final String TEXT_TYPE = " TEXT";
     private static final String COMMA_SEP = ",";
     private static final String SQL_CREATE_ENTRIES =
-            "CREATE TABLE "+ Track.TABLE_NAME+" ("+Track.COLUMN_NAME_ITEMID+" TEXT PRIMARY KEY, "+Track.COLUMN_NAME_LAST_UPDATED+" TEXT)";
+            "CREATE TABLE "+ Track.TABLE_NAME+" ("+Track.COLUMN_NAME_ITEMID+" TEXT PRIMARY KEY, "+Track.COLUMN_NAME_LAST_UPDATED+" TEXT, "+Track.COLUMN_NAME_NOTIFIED+" INTEGER)";
 
     private static final String SQL_DELETE_ENTRIES= "DROP TABLE IF EXISTS "+Track.TABLE_NAME;
 

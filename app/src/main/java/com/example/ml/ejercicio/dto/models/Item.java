@@ -19,6 +19,7 @@ public class Item implements Parcelable {
     public final String thumbnail;
     public String last_update;
     public Double price;
+    public String stop_time;
 
     public List<String> images;
 
@@ -38,6 +39,7 @@ public class Item implements Parcelable {
         thumbnail = in.readString();
         images = in.createStringArrayList();
         last_update = in.readString();
+        stop_time= in.readString();
     }
 
     public static final Creator<Item> CREATOR = new Creator<Item>() {
@@ -103,6 +105,7 @@ public class Item implements Parcelable {
         parcel.writeString(thumbnail);
         parcel.writeStringList(images);
         parcel.writeString(last_update);
+        parcel.writeString(stop_time);
     }
 
     public static Item fromJSON(JSONObject o) {
@@ -112,13 +115,13 @@ public class Item implements Parcelable {
             Double price = o.getDouble("price");
             String id = o.getString("id");
             String thumb = o.getString("thumbnail");
+            String stop_time= o.getString("stop_time");
+            String last_update = o.getString("last_updated");
 
             i = new Item(id, title, "Descripcion", thumb);
             i.price = price;
-
-            String last_update = o.getString("last_updated");
             i.last_update = last_update;
-
+            i.stop_time= stop_time;
 
             //dump images
             JSONArray images = o.getJSONArray("pictures");

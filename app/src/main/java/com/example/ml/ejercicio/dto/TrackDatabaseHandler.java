@@ -20,7 +20,8 @@ public class TrackDatabaseHandler {
 
     private static final String[] projection = {
             Track.COLUMN_NAME_ITEMID,
-            Track.COLUMN_NAME_LAST_UPDATED
+            Track.COLUMN_NAME_LAST_UPDATED,
+            Track.COLUMN_NAME_NOTIFIED
     };
 
     public TrackDatabaseHandler(Context context) {
@@ -33,6 +34,7 @@ public class TrackDatabaseHandler {
         values.put(Track.COLUMN_NAME_ITEMID, item.id);
         String last = item.last_update;
         values.put(Track.COLUMN_NAME_LAST_UPDATED, last);
+        values.put(Track.COLUMN_NAME_NOTIFIED, 0);
         db.insert(Track.TABLE_NAME, null, values);
         db.close();
     }
@@ -46,6 +48,7 @@ public class TrackDatabaseHandler {
                 Track t = new Track();
                 t.itemId = cursor.getString(cursor.getColumnIndexOrThrow(Track.COLUMN_NAME_ITEMID));
                 t.last_updated = cursor.getString(cursor.getColumnIndexOrThrow(Track.COLUMN_NAME_LAST_UPDATED));
+                t.notified = cursor.getInt(cursor.getColumnIndexOrThrow(Track.COLUMN_NAME_NOTIFIED));
                 map.put(t.itemId, t);
             } while (cursor.moveToNext());
             cursor.close();
@@ -62,6 +65,18 @@ public class TrackDatabaseHandler {
         boolean tracked= cursor.moveToFirst();
         db.close();
         return tracked;
+    }
+
+    public boolean isNotified(String itemId) {
+        SQLiteDatabase db = dbHandler.getReadableDatabase();
+        String selection = Track.COLUMN_NAME_ITEMID + " = ?";
+        String[] selectionArgs = {itemId};
+        Cursor cursor = db.query(Track.TABLE_NAME, projection, selection, selectionArgs, null, null, null);
+        boolean notified=false;
+        if(cursor.moveToFirst()){
+            notified= cursor.getInt(cursor.getColumnIndexOrThrow(Track.COLUMN_NAME_NOTIFIED))==1;
+        }
+        return notified;
     }
 
     public void deleteItem(String itemId){
